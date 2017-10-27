@@ -1,34 +1,80 @@
 package states;
 
+import entities.Enemigo01;
 import entities.Player;
+import flixel.FlxCamera.FlxCameraFollowStyle;
+import flixel.FlxObject;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.tile.FlxTilemap;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.util.FlxColor;
+import flixel.addons.editors.ogmo.FlxOgmoLoader;
 
 class PlayState extends FlxState
 {
 	private var player:Player;
-	private var plataforma:FlxSprite;
-	
+	public var loader:FlxOgmoLoader;
+	private var tilemapPiso:FlxTilemap;
+	private var enemyGroup:FlxTypedGroup<Enemigo01>;
 	
 	override public function create():Void
 	{
-		FlxG.camera.bgColor = FlxColor.ORANGE;
-		player = new Player(50, 50);
-		plataforma = new FlxSprite(30, 200);
-		plataforma.makeGraphic(1000,24);
-		plataforma.immovable = true;
-		
-		add(plataforma);
-		add(player);
 		super.create();
+		//FlxG.camera.bgColor = FlxColor.ORANGE;
+		player = new Player(0, 0);
+		FlxG.camera.follow(player, FlxCameraFollowStyle.PLATFORMER);
+		
+		enemyGroup = new FlxTypedGroup<Enemigo01>();
+		
+		loadTileMap();
+		add(tilemapPiso);
+		add(player);
+		add(enemyGroup);
+	}
+	
+	public function loadTileMap()
+	{
+		loader = new FlxOgmoLoader(AssetPaths.level__oel);
+		tilemapPiso = loader.loadTilemap(AssetPaths.tilesPiso__png, 32, 32, "tiles");
+		tilemapPiso.setTileProperties(0, FlxObject.NONE);
+		
+		FlxG.worldBounds.set(0, 0, tilemapPiso.width, tilemapPiso.height);
+		loader.loadEntities(entityCreator, "enemigos");
+	}
+	
+	private function entityCreator(entityName:String, entityData:Xml)
+	{
+		var x:Int = Std.parseInt(entityData.get("x"));
+		var y:Int = Std.parseInt(entityData.get("y"));
+		
+		switch (entityName) 
+		{
+			case "enemigo1":
+				var enemigo1:Enemigo01 = new Enemigo01(x, y, AssetPaths.bandido1__png);
+				enemyGroup.add(enemigo1);
+		}
 	}
 
+	function checkColision() 
+	{
+		if (FlxG.collide(player, enemyGroup))
+		{
+			player.kill();
+			
+		}
+	}
+	
+//	function collideEnemyPlayer(e:Enemigo01,p:Player) 
+	//{
+	
+//	}
+	
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
-		FlxG.collide(player, plataforma);
-		
+		checkColision();
+		FlxG.collide(player, tilemapPiso);
 	}
 }

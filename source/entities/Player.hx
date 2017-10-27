@@ -37,7 +37,7 @@ class Player extends FlxSprite
 		stateMachine();
 		super.update(elapsed);
 	}
-	
+
 	private function stateMachine():Void
 	{
 		switch (estadoActual)
