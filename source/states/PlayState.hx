@@ -64,11 +64,14 @@ class PlayState extends FlxState
 		{
 			player.kill();
 			player.arma.kill();
+			FlxG.resetState();
 		}
 		FlxG.collide(player, tilemapPiso);
 		FlxG.collide(enemyGroup, tilemapPiso);
 		FlxG.overlap(player.arma, enemyGroup, collideEspadaEnemigo);
 	}
+	
+
 	
 	function collideEspadaEnemigo(s:Arma, e:FlxSprite) 
 	{

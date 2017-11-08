@@ -27,7 +27,7 @@ class Enemigo01 extends FlxSprite
 	
 	function saltar() 
 	{
-		if (isTouching(FlxObject.LEFT)) 
+		if (isTouching(FlxObject.LEFT) && isOnScreen()) 
 		{
 			velocity.y = -3000;
 		}
@@ -47,6 +47,5 @@ class Enemigo01 extends FlxSprite
 	{
 		if (isTouching(FlxObject.FLOOR))
 			velocity.x = -60;
-			
 	}
 }
