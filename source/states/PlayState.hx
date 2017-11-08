@@ -1,5 +1,6 @@
 package states;
 
+import entities.Arma;
 import entities.Enemigo01;
 import entities.Player;
 import flixel.FlxCamera.FlxCameraFollowStyle;
@@ -15,6 +16,7 @@ import flixel.addons.editors.ogmo.FlxOgmoLoader;
 class PlayState extends FlxState
 {
 	private var player:Player;
+
 	public var loader:FlxOgmoLoader;
 	private var tilemapPiso:FlxTilemap;
 	private var enemyGroup:FlxTypedGroup<Enemigo01>;
@@ -22,16 +24,15 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
 		super.create();
-		//FlxG.camera.bgColor = FlxColor.ORANGE;
-		player = new Player(0, 0);
+		FlxG.camera.bgColor = FlxColor.GREEN;
+		player = new Player(40, 0);
 		FlxG.camera.follow(player, FlxCameraFollowStyle.PLATFORMER);
-		
 		enemyGroup = new FlxTypedGroup<Enemigo01>();
-		
 		loadTileMap();
 		add(tilemapPiso);
 		add(player);
 		add(enemyGroup);
+		
 	}
 	
 	public function loadTileMap()
@@ -62,19 +63,21 @@ class PlayState extends FlxState
 		if (FlxG.collide(player, enemyGroup))
 		{
 			player.kill();
-			
+			player.arma.kill();
 		}
+		FlxG.collide(player, tilemapPiso);
+		FlxG.collide(enemyGroup, tilemapPiso);
+		FlxG.overlap(player.arma, enemyGroup, collideEspadaEnemigo);
 	}
 	
-//	function collideEnemyPlayer(e:Enemigo01,p:Player) 
-	//{
-	
-//	}
+	function collideEspadaEnemigo(s:Arma, e:FlxSprite) 
+	{
+		e.kill();
+	}
 	
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
 		checkColision();
-		FlxG.collide(player, tilemapPiso);
 	}
 }

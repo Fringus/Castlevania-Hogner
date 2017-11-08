@@ -13,10 +13,10 @@
     <Height>240</Height>
   </LevelMinimumSize>
   <LevelMaximumSize>
-    <Width>1000</Width>
+    <Width>5000</Width>
     <Height>240</Height>
   </LevelMaximumSize>
-  <Filename>C:\Users\822\Desktop\testlevel.oep</Filename>
+  <Filename>C:\Users\Francisco\Desktop\asd\castlevania\assets\data\testlevel.oep</Filename>
   <AngleMode>Radians</AngleMode>
   <CameraEnabled>false</CameraEnabled>
   <CameraSize>
@@ -53,7 +53,7 @@
   <Tilesets>
     <Tileset>
       <Name>tileset</Name>
-      <FilePath>..\Downloads\New Piskel.png</FilePath>
+      <FilePath>..\images\tilesPiso.png</FilePath>
       <TileSize>
         <Width>32</Width>
         <Height>32</Height>
